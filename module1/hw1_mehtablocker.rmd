@@ -62,7 +62,7 @@ library(knitr)
 
 inc %>% group_by(State) %>% summarise(n=length(State)) %>% ungroup() %>% 
     ggplot(aes(x=State, y=n)) + geom_bar(stat="identity", position="dodge") + 
-    coord_flip() + scale_x_discrete(limits = rev(levels(inc$State))) + 
+    coord_flip() + theme(axis.text.y = element_text(size=6))  + scale_x_discrete(limits = rev(levels(inc$State))) + 
     labs(title = "Number of Companies By State", y="Number of Companies", x="State") + 
     theme(legend.position = "none")
 
