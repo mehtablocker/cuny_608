@@ -45,6 +45,7 @@ def update_output(n_clicks, boro, spc_common):
         url = "https://data.cityofnewyork.us/resource/nwxe-4ae8.json?$limit=1000000&$where=boroname='" + boro + "'"
         trees = pd.read_json(url)
         species_list = pd.Series(trees['spc_common'].unique()).dropna().sort_values().tolist()
+        species_string = str(species_list)[2:-2].replace(" \'", " ").replace("\',", ",").replace('\",', ',')
         
         try:        
             df = trees.query('spc_common == "' + spc_common + '"')
@@ -57,7 +58,7 @@ def update_output(n_clicks, boro, spc_common):
             col_format = [{"name": i, "id": i, "type": "numeric", "format": FormatTemplate.percentage(1)} for i in df_cont.columns[1:]]
             col_format.insert(0, first_col_format)
     
-            return (html.Iframe(srcDoc=boro.replace('%20', ' ') + " species choices: " + str(species_list)[1:-1]),
+            return (html.Iframe(srcDoc=boro.replace('%20', ' ') + " species choices: <br><br>" + species_string),
                     
                     html.H3("Two Way Contingency Table:"), 
                     
@@ -69,9 +70,11 @@ def update_output(n_clicks, boro, spc_common):
                     )
         
         except:
-            return ("Check syntax of tree species!!!...", 
+            return (dcc.Markdown('''
+                                 *Error: Check syntax of tree species.*
+                                 '''), 
                     
-                    html.Iframe(srcDoc=boro.replace('%20', ' ') + " species choices: " + str(species_list)[1:-1])
+                    html.Iframe(srcDoc=boro.replace('%20', ' ') + " species choices: <br><br>" + species_string)
                     )
 
 
