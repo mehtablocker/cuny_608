@@ -15,7 +15,8 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(children=[
-        html.H1('Get Tree Health Proportions:'), 
+        html.H1('NYC Tree Health Proportions'), 
+        html.H6("Pick a Borough and enter a Tree Species:"),
         dcc.Dropdown(
                 id='boro_input', 
                 options=[
@@ -30,7 +31,7 @@ app.layout = html.Div(children=[
         dcc.Input(id='spc_common_input', value='magnolia', type='text'),
         html.Button('Submit', id='button', n_clicks=0),
         html.Div(id='container-button-basic',
-                 children='Pick a Borough and enter a Tree Species')
+                 children='Pick a Borough and enter a Tree Species')        
         ])
 
 @app.callback(
@@ -57,6 +58,8 @@ def update_output(n_clicks, boro, spc_common):
             col_format.insert(0, first_col_format)
     
             return (html.Iframe(srcDoc=boro.replace('%20', ' ') + " species choices: " + str(species_list)[1:-1]),
+                    
+                    html.H3("Two Way Contingency Table:"), 
                     
                     dash_table.DataTable(
                             id='table',
