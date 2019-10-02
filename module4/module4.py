@@ -5,9 +5,6 @@ from dash.dependencies import Input, Output, State
 import dash_table
 import dash_table.FormatTemplate as FormatTemplate
 import pandas as pd
-import numpy as np
-import pandas_datareader.data as pdr
-import datetime as dt
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
