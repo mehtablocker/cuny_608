@@ -69,7 +69,7 @@ def update_output(n_clicks, boro, spc_common):
                     )
         
         except:
-            return ("Check syntax of tree species!!!", 
+            return ("Check syntax of tree species!!!...", 
                     
                     html.Iframe(srcDoc=boro.replace('%20', ' ') + " species choices: " + str(species_list)[1:-1])
                     )
