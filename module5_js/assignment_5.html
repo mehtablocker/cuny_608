@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+    
+    This is assignment 5 for CUNY 608!
+	
+-->
+
+<head><title>Module 5</title>
+<meta charset="utf-8"></head>
+
+<body>
+
+<h1>Part 1:</h1>
+
+<script>
+
+document.write('<br>Reverse any word you type into this box:')
+
+// Basic functions
+
+function reverse_str(the_str){
+    
+    var str_rev;
+    str_rev = the_str.split("").reverse().join("");
+    
+    return(str_rev);
+};
+
+function calc_rev(){
+    var t = document.getElementById("target");
+    t.innerHTML = reverse_str(document.getElementById('str').value);
+}
+</script>
+<p>
+<form>
+    <input id="str" type="string" size="4">
+    <input type="button" value="Reverse it!" onClick="calc_rev();">
+</form>
+</p>
+
+<div id="target"></div>
+
+
+<script>
+
+document.write('<br>Return the first 20 multiples of any number in a 5x4 table:')
+
+function get_multiples(the_num){
+    
+	var array_of_mults = [...Array(20).keys()];
+
+    var first_twenty = array_of_mults.map(function(x){return (x+1) * the_num});
+    
+	var my_table = "<table>"
+	
+	// Loop through first_twenty multiples and insert in to my_table in correct format
+	for (var i = 0; i < 5; i++) {
+		my_table += "<tr>"
+		
+		for (var j = 0; j < 4; j++) {
+			my_table += "<td>" + first_twenty[(i*4) + j] + "</td>"
+		}
+		my_table += "</tr>"
+	}
+	
+	my_table += "</table>"
+	return my_table
+	
+};
+
+function calc_mult(){
+    var t = document.getElementById("target2");
+	t.innerHTML = get_multiples(document.getElementById('num').value);
+}
+
+</script>
+<p>
+<form>
+    <input id="num" type="number" size="4">
+    <input type="button" value="Go!" onClick="calc_mult();">
+</form>
+</p>
+
+<div id="target2"></div>
+
+<br>
+
+<h1>Part 2:</h1>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.4/d3.min.js"></script>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<h4>Heights and weights for various presidents:</h4>
+
+<script>
+d3.text("/data/presidents.csv", function(data) {
+	var parsedCSV = d3.csv.parseRows(data);
+
+	var container = d3.select("#pres1")
+		.append("table")
+
+		.selectAll("tr")
+			.data(parsedCSV).enter()
+			.append("tr")
+
+		.selectAll("td")
+			.data(function(d) { return d; }).enter()
+			.append("td")
+			.text(function(d) { return d; });		
+
+});
+</script>
+
+<br><div id="pres1"></div>
+
+<br>
+
+<h4>Using the list above, enter the name of a specific president:</h4>
+
+<script>
+
+function populate_name(){
+
+var this_pres = document.getElementById('pres_str').value;
+
+d3.csv("/data/presidents.csv", function(data) {
+
+    var filteredData = data.filter(function(d, i) { 
+		if (d["Name"] == this_pres){ 
+			return d;} })
+	
+	d3.select("#pres2")
+        .selectAll("p")
+        .data(filteredData)
+        .enter()
+        .append("p")
+        .text(function(d) {
+            return "Height:" + d.Height + " Weight:" + d.Weight;
+        });
+});
+}
+</script>
+
+<form>
+    <input id="pres_str" type="string" size="4">
+    <input type="button" value="Get Ht/Wt" onClick="populate_name();">
+</form>
+
+<div id="pres2"></div>
+
+</body>
+</html>
